@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 User = Struct.new(
-  :id,
   :first_name,
   :last_name,
   :email,
   :company_id,
   :email_status,
-  :active_status,
   :tokens
 )
 
@@ -18,8 +16,8 @@ def parse_and_filter_users(users)
     next unless user['active_status']
 
     User.new(
-      user['id'], user['first_name'], user['last_name'], user['email'], user['company_id'],
-      user['email_status'], user['active_status'], user['tokens']
+      user['first_name'], user['last_name'], user['email'],
+      user['company_id'], user['email_status'], user['tokens']
     )
   end.compact
 end

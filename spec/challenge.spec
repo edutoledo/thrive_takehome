@@ -24,7 +24,6 @@ describe 'challenge' do
       expect(result).not_to be_nil
       expect(result.size).to eq(1)
       expect(result.first).to have_attributes(
-        id: 1,
         first_name: 'Tanya',
         last_name: 'Nichols',
         email: 'tanya.nichols@test.com',
@@ -63,7 +62,6 @@ describe 'challenge' do
       expect(result).not_to be_nil
       expect(result.size).to eq(1)
       expect(result.first).to have_attributes(
-        id: 1,
         first_name: 'Tanya',
         last_name: 'Nichols',
         email: 'tanya.nichols@test.com',
@@ -102,7 +100,6 @@ describe 'challenge' do
       expect(result).not_to be_nil
       expect(result.size).to eq(2)
       expect(result.first).to have_attributes(
-        id: 1,
         first_name: 'Tanya',
         last_name: 'Nichols',
         email: 'tanya.nichols@test.com',
@@ -111,7 +108,6 @@ describe 'challenge' do
         tokens: 23
       )
       expect(result.last).to have_attributes(
-        id: 11,
         first_name: 'Alexander',
         last_name: 'Gardner',
         email: 'alexander.gardner@demo.com',
