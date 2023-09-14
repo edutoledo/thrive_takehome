@@ -15,10 +15,11 @@ class CompaniesUsersPrinter
     @companies = companies
 
     group_users_by_company_and_email_status
-    # TODO: write this next one
   end
 
-  def print_to_file(filename); end
+  def print_to_file(_filename)
+    puts print_string
+  end
 
   private
 
@@ -35,11 +36,13 @@ class CompaniesUsersPrinter
       # store them in the organized data
       next if grouped_by_email[:emailed_users].nil? && grouped_by_email[:not_emailed_users].nil?
 
+      # In case one of them is nil, replace with empty array,
+      # otherwise running .size on it will error
+      grouped_by_email[:emailed_users] ||= []
+      grouped_by_email[:not_emailed_users] ||= []
+
       grouped_company_users << grouped_data.merge(grouped_by_email)
     end
-
-    # Don't really need to return it since it's stored in an instance variable, but... why not?
-    grouped_company_users
   end
 
   def group_users_by_email_status(company)
@@ -63,23 +66,37 @@ class CompaniesUsersPrinter
     output + "\n\tCompany Name: #{company.name}"
   end
 
-  def print_users(users, _top_up)
-    users.map do |user|
-      user_print = "\n\t\t#{user.last_name}, #{user.first_name}, #{user.email}"
-      user_print += "\n\t\t\tPrevious Token Balance, #{user}"
+  def print_users(users, top_up)
+    # Gotta put a conditional newline here
+    output = users.size.positive? ? "\n" : ''
+    output + users.map do |user|
+      # Looks nicer without the indentation, things line up more like they'll look in the file,
+      # sometimes conventions are meant to be broken.
+      # rubocop:disable Layout/LineEndStringConcatenationIndentation
+      "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
+      "\n\t\t\tPrevious Token Balance, #{user.tokens}" \
+      "\n\t\t\tNew Token Balance  #{user.tokens + top_up}"
+      # rubocop:enable Layout/LineEndStringConcatenationIndentation
     end.join("\n")
   end
 
-  def print_string
+  # 1 line more than the 10 allowed by the method length
+  def print_string # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     grouped_company_users.map do |company_users|
-      company_users_print = "\n\tCompany Id: #{company.id}"
-      company_users_print += "\n\tCompany Name: #{company.name}"
-      company_users_print += "\n\tUsers Emailed:"
-      company_users_print += print_users(company_users[:emailed_users], company.top_up)
-      company_users_print += "\n\tUsers Not Emailed:"
-      company_users_print += print_users(company_users[:not_emailed_users], company.top_up)
+      company = company_users[:company]
+      user_count = company_users[:emailed_users].size + company_users[:not_emailed_users].size
 
-      company_users_print
+      # Looks nicer without the indentation, things line up more like they'll look in the file,
+      # sometimes conventions are meant to be broken.
+      # rubocop:disable Style/StringConcatenation, Layout/MultilineOperationIndentation
+      "\n\tCompany Id: #{company.id}" \
+      "\n\tCompany Name: #{company.name}" \
+      "\n\tUsers Emailed:" +
+      print_users(company_users[:emailed_users], company.top_up) +
+      "\n\tUsers Not Emailed:" +
+      print_users(company_users[:not_emailed_users], company.top_up) +
+      "\n\t\tTotal amount of top ups for #{company.name}: #{user_count * company.top_up}"
+      # rubocop:enable Style/StringConcatenation, Layout/MultilineOperationIndentation
     end.join("\n")
   end
 end
