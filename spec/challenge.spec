@@ -29,8 +29,7 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        previous_tokens: 23,
-        current_tokens: 23
+        previous_tokens: 23
       )
     end
 
@@ -68,8 +67,7 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        previous_tokens: 23,
-        current_tokens: 23
+        previous_tokens: 23
       )
     end
 
@@ -107,8 +105,7 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        previous_tokens: 23,
-        current_tokens: 23
+        previous_tokens: 23
       )
       expect(result.last).to have_attributes(
         first_name: 'Alexander',
@@ -116,8 +113,7 @@ describe 'challenge' do
         email: 'alexander.gardner@demo.com',
         company_id: 4,
         email_status: false,
-        previous_tokens: 40,
-        current_tokens: 40
+        previous_tokens: 40
       )
     end
   end
@@ -183,22 +179,22 @@ describe 'challenge' do
   describe '#top_up_tokens' do
     it 'tops up tokens for user in the company' do
       users = [
-        User.new('First', 'Last', 'first.last@email.com', 111, false, 0, 0)
+        User.new('First', 'Last', 'first.last@email.com', 111, false, 120)
       ]
       companies = [
-        Company.new(111, 'A&B LLC', 78, true)
+        Company.new(111, 'A&B LLC', 80, true)
       ]
 
       result = top_up_tokens(users, companies)
 
       expect(result).not_to be_nil
       expect(result.size).to eq(users.size)
-      expect(result.first.current_tokens).to eq(189)
+      expect(result.first.tokens).to eq(200)
     end
 
     it 'does not top up tokens for users not in the company' do
       users = [
-        User.new('First', 'Last', 'first.last@email.com', 110, false, 0, 0)
+        User.new('First', 'Last', 'first.last@email.com', 110, false, 0)
       ]
       companies = [
         Company.new(111, 'A&B LLC', 78, true)
@@ -208,7 +204,27 @@ describe 'challenge' do
 
       expect(result).not_to be_nil
       expect(result.size).to eq(users.size)
-      expect(result.first.current_tokens).to eq(0)
+      expect(result.first.tokens).to eq(0)
+    end
+
+    it 'tops up tokens for all users in the company' do
+      users = [
+        User.new('First', 'Last', 'first.last@email.com', 110, false, 0),
+        User.new('Other', 'Last', 'other.last@email.com', 110, false, 10),
+        User.new('Another', 'Last', 'another.last@email.com', 112, false, 70)
+      ]
+      companies = [
+        Company.new(111, 'A&B LLC', 78, true),
+        Company.new(110, 'MegaCorp!', 10, true)
+      ]
+
+      result = top_up_tokens(users, companies)
+
+      expect(result).not_to be_nil
+      expect(result.size).to eq(users.size)
+      expect(result.first.tokens).to eq(10)
+      expect(result.second.tokens).to eq(20)
+      expect(result.last.tokens).to eq(70)
     end
   end
 end

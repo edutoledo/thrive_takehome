@@ -7,7 +7,7 @@ User = Struct.new(
   :company_id,
   :email_status,
   :previous_tokens,
-  :current_tokens
+  :tokens
 )
 
 Company = Struct.new(:id, :name, :top_up, :email_status)
@@ -18,7 +18,7 @@ def parse_and_filter_users(users)
 
     User.new(
       user['first_name'], user['last_name'], user['email'],
-      user['company_id'], user['email_status'], user['tokens'], user['tokens']
+      user['company_id'], user['email_status'], user['tokens']
     )
   end.compact
 end
