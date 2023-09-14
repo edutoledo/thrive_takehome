@@ -7,7 +7,7 @@ class CompaniesUsersPrinter
   attr_reader :users, :companies, :grouped_company_users
 
   # users and companies are expected to be sorted, and inactive users filtered out
-  def initialize(users:, companies:)
+  def initialize(users, companies)
     raise 'Users cannot be nil' if users.nil?
     raise 'Companies cannot be nil' if companies.nil?
 
@@ -16,8 +16,9 @@ class CompaniesUsersPrinter
 
     group_users_by_company_and_email_status
     # TODO: write this next one
-    # top_up_users
   end
+
+  def print_to_file(filename); end
 
   private
 
@@ -55,5 +56,30 @@ class CompaniesUsersPrinter
     users.filter { |u| u.company_id == company.id }.group_by do |user|
       company.email_status && user.email_status ? :emailed_users : :not_emailed_users
     end
+  end
+
+  def print_company(company)
+    output = "\n\tCompany Id: #{company.id}"
+    output + "\n\tCompany Name: #{company.name}"
+  end
+
+  def print_users(users, _top_up)
+    users.map do |user|
+      user_print = "\n\t\t#{user.last_name}, #{user.first_name}, #{user.email}"
+      user_print += "\n\t\t\tPrevious Token Balance, #{user}"
+    end.join("\n")
+  end
+
+  def print_string
+    grouped_company_users.map do |company_users|
+      company_users_print = "\n\tCompany Id: #{company.id}"
+      company_users_print += "\n\tCompany Name: #{company.name}"
+      company_users_print += "\n\tUsers Emailed:"
+      company_users_print += print_users(company_users[:emailed_users], company.top_up)
+      company_users_print += "\n\tUsers Not Emailed:"
+      company_users_print += print_users(company_users[:not_emailed_users], company.top_up)
+
+      company_users_print
+    end.join("\n")
   end
 end
