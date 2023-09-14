@@ -42,7 +42,10 @@ def read_and_parse_users_and_companies(users_filename, companies_filename)
     parse_filter_and_sort_users(JSON.parse(File.read(users_filename))),
     parse_and_sort_companies(JSON.parse(File.read(companies_filename)))
   ]
-  # TODO: Both file read and json parse can raise errors, handle those
+rescue StandardError => e
+  puts "Error reading or parsings files #{users_filename}, #{companies_filename} in " \
+       '#read_and_parse_users_and_companies'
+  puts e
 end
 
 def print_out_companies_users
