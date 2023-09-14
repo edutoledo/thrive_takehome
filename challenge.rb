@@ -27,3 +27,13 @@ def parse_companies(companies)
     Company.new(company['id'], company['name'], company['top_up'], company['email_status'])
   end
 end
+
+# No specs written for this method since it does simple things, reading a file, parsing JSON,
+# and calling 2 other methods that are already covered by specs.
+def read_and_parse_users_and_companies(users_filename, companies_filename)
+  [
+    parse_users(JSON.parse(File.read(users_filename))),
+    parse_companies(JSON.parse(File.read(companies_filename)))
+  ]
+  # TODO: Both file read and json parse can raise errors, handle those
+end
