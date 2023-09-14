@@ -14,6 +14,7 @@
 - Each unit test ('it' block) is completely self contained, all variable definitions are right there and exactly what code is running is very clear.
 - It does lead to more verbose specs and a lot of duplication accross tests. However, the goal of a unit test is not conciseness, it is clarity, it should be a contract describing how a part of your code should behave.
 - Another break from convention that seems to exist only for the sake of convention is the usage (or lack thereof) of context blocks. The 'it' blocks have more descriptive texts instead of nesting them into more context blocks.
+- I have also used many expects within each 'it', I see nothing wrong with that as well.
 
 ## Caveats
 

@@ -179,5 +179,37 @@ describe 'challenge' do
       )
     end
   end
+
+  describe '#top_up_tokens' do
+    it 'tops up tokens for user in the company' do
+      users = [
+        User.new('First', 'Last', 'first.last@email.com', 111, false, 0, 0)
+      ]
+      companies = [
+        Company.new(111, 'A&B LLC', 78, true)
+      ]
+
+      result = top_up_tokens(users, companies)
+
+      expect(result).not_to be_nil
+      expect(result.size).to eq(users.size)
+      expect(result.first.current_tokens).to eq(189)
+    end
+
+    it 'does not top up tokens for users not in the company' do
+      users = [
+        User.new('First', 'Last', 'first.last@email.com', 110, false, 0, 0)
+      ]
+      companies = [
+        Company.new(111, 'A&B LLC', 78, true)
+      ]
+
+      result = top_up_tokens(users, companies)
+
+      expect(result).not_to be_nil
+      expect(result.size).to eq(users.size)
+      expect(result.first.current_tokens).to eq(0)
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
