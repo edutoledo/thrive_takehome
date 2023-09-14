@@ -3,3 +3,6 @@ AllCops:
   NewCops: enable
   Exclude:
     - "Gemfile"
+
+Metrics/MethodLength:
+  Max: 30
