@@ -13,7 +13,7 @@ User = Struct.new(
 
 Company = Struct.new(:id, :name, :top_up, :email_status)
 
-def parse_users(users)
+def parse_and_filter_users(users)
   users.map do |user|
     User.new(
       user['id'], user['first_name'], user['last_name'], user['email'], user['company_id'],
