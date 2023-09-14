@@ -3,10 +3,8 @@
 ## Explanation
 
 - The ruby version I used (3.1.2) is just the one that came by default on the WSL (Windows Subsystem for Linux) Debian instance. I did not double check this, but the code should be simple enough to work on 2.X Ruby (or possible even 3.2).
-- All work was done in a TDD fashion; write a unit test, see it fail. Write the minimum amount of code to see it pass. Refactor. (Red Green Refactor)
-- I left all refactoring as the very last thing, once the full test suite was there. The initial "final" solution just has all the code running in a single file with some methods, no real classes, just Structs.
+- Most work was done in a TDD fashion, using Red, Green, Refactor. Eventually I wrote the main class to refactor. Then I covered it with a test suite.
 - All work done can be seen in the commit history.
-- All error handling logic was made at the end.
 
 ## RSpec usage
 
