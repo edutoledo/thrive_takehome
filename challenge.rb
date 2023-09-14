@@ -6,7 +6,8 @@ User = Struct.new(
   :email,
   :company_id,
   :email_status,
-  :tokens
+  :previous_tokens,
+  :current_tokens
 )
 
 Company = Struct.new(:id, :name, :top_up, :email_status)
@@ -17,7 +18,7 @@ def parse_and_filter_users(users)
 
     User.new(
       user['first_name'], user['last_name'], user['email'],
-      user['company_id'], user['email_status'], user['tokens']
+      user['company_id'], user['email_status'], user['tokens'], user['tokens']
     )
   end.compact
 end
@@ -32,8 +33,12 @@ end
 # and calling 2 other methods that are already covered by specs.
 def read_and_parse_users_and_companies(users_filename, companies_filename)
   [
-    parse_users(JSON.parse(File.read(users_filename))),
+    parse_and_filter_users(JSON.parse(File.read(users_filename))),
     parse_companies(JSON.parse(File.read(companies_filename)))
   ]
   # TODO: Both file read and json parse can raise errors, handle those
+end
+
+def top_up_tokens(users, companies)
+  [users, companies]
 end

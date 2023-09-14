@@ -29,7 +29,8 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        tokens: 23
+        previous_tokens: 23,
+        current_tokens: 23
       )
     end
 
@@ -67,7 +68,8 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        tokens: 23
+        previous_tokens: 23,
+        current_tokens: 23
       )
     end
 
@@ -105,7 +107,8 @@ describe 'challenge' do
         email: 'tanya.nichols@test.com',
         company_id: 2,
         email_status: true,
-        tokens: 23
+        previous_tokens: 23,
+        current_tokens: 23
       )
       expect(result.last).to have_attributes(
         first_name: 'Alexander',
@@ -113,7 +116,8 @@ describe 'challenge' do
         email: 'alexander.gardner@demo.com',
         company_id: 4,
         email_status: false,
-        tokens: 40
+        previous_tokens: 40,
+        current_tokens: 40
       )
     end
   end
