@@ -28,4 +28,6 @@ class CompaniesUsersPrinter
   def sort_companies
     companies.sort! { |a, b| a.id <=> b.id }
   end
+
+  def group_users_by_company_and_email_status; end
 end
