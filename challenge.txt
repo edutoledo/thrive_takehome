@@ -13,7 +13,7 @@ Code challenge
   field.
 
   If the users company email status is true indicate in the output that the
-  user was sent an email ( don't actually send any emails).
+  user was sent an email (don't actually send any emails).
   However, if the user has an email status of false, don't send the email
   regardless of the company's email status.
 
