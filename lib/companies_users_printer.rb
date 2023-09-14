@@ -6,6 +6,7 @@ class CompaniesUsersPrinter
   # can check values
   attr_reader :users, :companies, :grouped_company_users
 
+  # users and companies are expected to be sorted, and inactive users filtered out
   def initialize(users:, companies:)
     raise 'Users cannot be nil' if users.nil?
     raise 'Companies cannot be nil' if companies.nil?
@@ -13,9 +14,6 @@ class CompaniesUsersPrinter
     @users = users
     @companies = companies
 
-    # Filter out inactive users, and sort both arrays as required
-    user.filter!(&:active_status).sort! { |a, b| a.last_name <=> b.last_name }
-    companies.sort! { |a, b| a.id <=> b.id }
     group_users_by_company_and_email_status
     # TODO: write this next one
     # top_up_users
