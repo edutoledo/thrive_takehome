@@ -15,11 +15,13 @@ Company = Struct.new(:id, :name, :top_up, :email_status)
 
 def parse_and_filter_users(users)
   users.map do |user|
+    next unless user['active_status']
+
     User.new(
       user['id'], user['first_name'], user['last_name'], user['email'], user['company_id'],
       user['email_status'], user['active_status'], user['tokens']
     )
-  end
+  end.compact
 end
 
 def parse_companies(companies)
