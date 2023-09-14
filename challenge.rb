@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 User = Struct.new(
   :first_name,
   :last_name,
@@ -39,6 +41,17 @@ def read_and_parse_users_and_companies(users_filename, companies_filename)
   # TODO: Both file read and json parse can raise errors, handle those
 end
 
-def top_up_tokens(_users, _companies)
-  nil
+def top_up_tokens(users, companies)
+  users.map do |user|
+    # Value not set before, this is the "quick and dirty" working code, refactoring will come larter
+    user.tokens = user.previous_tokens
+    companies.each do |company|
+      next unless user.company_id == company.id
+
+      user.tokens += company.top_up
+      break
+    end
+
+    user
+  end
 end

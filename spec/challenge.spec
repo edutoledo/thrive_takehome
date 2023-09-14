@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './challenge'
+require 'pry'
 
 # rubocop:disable Metrics/BlockLength
 describe 'challenge' do
@@ -219,6 +220,7 @@ describe 'challenge' do
       ]
 
       result = top_up_tokens(users, companies)
+      binding.pry
 
       expect(result).not_to be_nil
       expect(result.size).to eq(users.size)
