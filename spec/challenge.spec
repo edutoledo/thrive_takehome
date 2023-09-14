@@ -128,7 +128,7 @@ describe 'challenge' do
       result = parse_companies(companies)
 
       expect(result).not_to be_nil
-      expect(result.size).to eq(1)
+      expect(result.size).to eq(2)
       expect(result.first).to have_attributes(
         id: 42,
         name: 'Ramjac Corporation',

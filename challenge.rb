@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# require 'pry'
-
 User = Struct.new(
   :id,
   :first_name,
@@ -13,6 +11,8 @@ User = Struct.new(
   :tokens
 )
 
+Company = Struct.new(:id, :name, :top_up, :email_status)
+
 def parse_users(users)
   users.map do |user|
     User.new(
@@ -22,6 +22,8 @@ def parse_users(users)
   end
 end
 
-def parse_companies(_companies)
-  nil
+def parse_companies(companies)
+  companies.map do |company|
+    Company.new(company['id'], company['name'], company['top_up'], company['email_status'])
+  end
 end
