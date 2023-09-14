@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 User = Struct.new(
   :first_name,
   :last_name,
