@@ -6,3 +6,6 @@ AllCops:
 
 Metrics/MethodLength:
   Max: 30
+
+Layout/LineLength:
+  Max: 100

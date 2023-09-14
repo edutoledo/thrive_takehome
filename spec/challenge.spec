@@ -85,5 +85,63 @@ describe 'challenge' do
       )
     end
   end
+
+  describe '#parse_companies' do
+    it 'parses a single company properly' do
+      companies = [
+        {
+          'id' => 42,
+          'name' => 'Ramjac Corporation',
+          'top_up' => 9001,
+          'email_status' => false
+        }
+      ]
+
+      result = parse_companies(companies)
+
+      expect(result).not_to be_nil
+      expect(result.size).to eq(1)
+      expect(result.first).to have_attributes(
+        id: 42,
+        name: 'Ramjac Corporation',
+        top_up: 9001,
+        email_status: false
+      )
+    end
+
+    it 'parses many companies properly' do
+      companies = [
+        {
+          'id' => 42,
+          'name' => 'Ramjac Corporation',
+          'top_up' => 9001,
+          'email_status' => false
+        },
+        {
+          'id' => 1337,
+          'name' => 'Dynamic',
+          'top_up' => 300,
+          'email_status' => true
+        }
+      ]
+
+      result = parse_companies(companies)
+
+      expect(result).not_to be_nil
+      expect(result.size).to eq(1)
+      expect(result.first).to have_attributes(
+        id: 42,
+        name: 'Ramjac Corporation',
+        top_up: 9001,
+        email_status: false
+      )
+      expect(result.last).to have_attributes(
+        id: 1337,
+        name: 'Dynamic',
+        top_up: 300,
+        email_status: true
+      )
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
