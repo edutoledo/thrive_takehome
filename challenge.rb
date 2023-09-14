@@ -53,3 +53,37 @@ def top_up_tokens(users, companies)
     user
   end
 end
+
+def group_and_categorize_company_users(_users, _companies)
+  nil
+end
+
+def print_company(company, users)
+  # For now the users received will be all users, after refactoring it will be cleaner
+  output = "\n\tCompany Id: #{company.id}"
+  output += "\n\tCompany Name: #{company.name}"
+  output += "\n\tUsers Emailed:"
+
+  emailed_users = []
+  not_emailed_users = []
+
+  if company.email_status
+    users.each do |user|
+      next unless user.company_id == company.id
+
+      if user.email_status
+        emailed_users << user
+      else
+        not_emailed_users << user
+      end
+    end
+  else
+    not_emailed_users = users.filter do |user|
+      user.company_id == company.id
+    end
+  end
+  emailed_users.sort! { |a, b| a.last_name <=> b.last_name }
+  not_emailed_users.sort! { |a, b| a.last_name <=> b.last_name }
+
+  output
+end
