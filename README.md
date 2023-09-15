@@ -5,6 +5,7 @@
 - The ruby version I used (3.1.2) is just the one that came by default on the WSL (Windows Subsystem for Linux) Debian instance. I did not double check this, but the code should be simple enough to work on 2.X Ruby (or possible even 3.2).
 - Most work was done in a TDD fashion, using Red, Green, Refactor. Eventually I wrote the main class to refactor. Then I covered it with a test suite.
 - All work done can be seen in the commit history.
+- There are no specs covering the output piece since that is more akin to manual QA, I did manual testing, visual comparison and diffs.
 
 ## RSpec usage
 

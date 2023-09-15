@@ -79,8 +79,7 @@ class CompaniesUsersPrinter
       end.join("\n")
   end
 
-  # 1 line more than the 10 allowed by the method length
-  def print_string # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def print_string
     # rubocop:disable Style/StringConcatenation
     grouped_company_users.map do |company_users|
       company = company_users[:company]

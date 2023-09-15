@@ -3,10 +3,118 @@
 require 'json'
 require './lib/input_parser'
 
+# Since the whole module only has one public method, I'll dispense with creating yet another
+# level of describe to describe that single method.
 # rubocop:disable Metrics/BlockLength
 describe InputParser do
-  # Since the whole module only has one public method, I'll dispense with creating yet another
-  # level of describe
+  it 'skips user if missing tokens' do
+    users_in = [
+      {
+        id: 1,
+        first_name: 'Tanya',
+        last_name: 'Nichols',
+        email: 'tanya.nichols@test.com',
+        company_id: 2,
+        email_status: true,
+        active_status: true
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
+
+    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(users).to be_empty
+  end
+
+  it 'skips user if tokens is null' do
+    users_in = [
+      {
+        id: 1,
+        first_name: 'Tanya',
+        last_name: 'Nichols',
+        email: 'tanya.nichols@test.com',
+        company_id: 2,
+        email_status: true,
+        active_status: true,
+        tokens: nil
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
+
+    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(users).to be_empty
+  end
+
+  it 'skips user if tokens is not of type Integer' do
+    users_in = [
+      {
+        id: 1,
+        first_name: 'Tanya',
+        last_name: 'Nichols',
+        email: 'tanya.nichols@test.com',
+        company_id: 2,
+        email_status: true,
+        active_status: true,
+        tokens: 'string here'
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
+
+    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(users).to be_empty
+  end
+
+  it 'skips user if company_id is missing' do
+    users_in = [
+      {
+        id: 1,
+        first_name: 'Tanya',
+        last_name: 'Nichols',
+        email: 'tanya.nichols@test.com',
+        email_status: true,
+        active_status: true,
+        tokens: 'string here'
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
+
+    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(users).to be_empty
+  end
+
+  it 'skips user if company_id is null' do
+    users_in = [
+      {
+        id: 1,
+        first_name: 'Tanya',
+        last_name: 'Nichols',
+        email: 'tanya.nichols@test.com',
+        company_id: nil,
+        email_status: true,
+        active_status: true,
+        tokens: 'string here'
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
+
+    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(users).to be_empty
+  end
+
   it 'parses a single active user properly' do
     users_in = [
       {
@@ -127,9 +235,7 @@ describe InputParser do
       tokens: 23
     )
   end
-end
 
-describe '#parse_and_sort_companies' do
   it 'parses a single company properly' do
     companies_in = [
       {

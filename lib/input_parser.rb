@@ -2,28 +2,28 @@
 
 require 'json'
 
-module InputParser
-  # Keeping methods private and creating a single public method from the whole module
-  class InputParser
-    # No need to have a whole class for User. The challenge does state:
-    #   Any user that belongs to a company in the companies file and is active
-    #   needs to get a token top up of the specified amount in the companies top up
-    #   field.
-    # But since the true purpose is to print out that data to a file, it adds unnecessary complexity
-    # to have a whole class just to satisfy that something was "topped up". This won't be stored
-    # anywhwere except the output text file, so for all intents and purposes the final "user" was
-    # topped up.
-    User = Struct.new(
-      :first_name,
-      :last_name,
-      :email,
-      :company_id,
-      :email_status,
-      :tokens
-    )
-    # Same thing for company, a whole class is not needed.
-    Company = Struct.new(:id, :name, :top_up, :email_status)
+# No need to have a whole class for User. The challenge does state:
+#   Any user that belongs to a company in the companies file and is active
+#   needs to get a token top up of the specified amount in the companies top up
+#   field.
+# But since the true purpose is to print out that data to a file, it adds unnecessary complexity
+# to have a whole class just to satisfy that something was "topped up". This won't be stored
+# anywhwere except the output text file, so for all intents and purposes the final "user" was
+# topped up.
+User = Struct.new(
+  :first_name,
+  :last_name,
+  :email,
+  :company_id,
+  :email_status,
+  :tokens
+)
+# Same thing for company, a whole class is not needed.
+Company = Struct.new(:id, :name, :top_up, :email_status)
 
+module InputParser
+  # This class is keeping methods private
+  class InputParser
     def read_and_parse_users_and_companies(users_filename, companies_filename)
       [
         parse_filter_and_sort_users(JSON.parse(File.read(users_filename))),
@@ -37,9 +37,27 @@ module InputParser
 
     private
 
+    def error_handle_user(user)
+      # Handle wrong input. The ones that matter are company_id and tokens, the rest will look
+      # weird if they're nil, but they won't lead to errors down the line. Raising is another
+      # option for doing this, but it would halt and exit.
+      return "User with id: #{user['id']} has no tokens\n" if user['tokens'].nil?
+      return "User with id: #{user['id']} has no company_id\n" if user['company_id'].nil?
+      return if user['tokens'].is_a?(Integer)
+
+      "User with id: #{user['id']} has invalid type for tokens\n"
+    end
+
     def parse_filter_and_sort_users(users)
       users.map! do |user|
         next unless user['active_status']
+
+        err = error_handle_user(user)
+        unless err.nil?
+          # Just writing it to stdout
+          puts err
+          next
+        end
 
         User.new(
           user['first_name'], user['last_name'], user['email'],
