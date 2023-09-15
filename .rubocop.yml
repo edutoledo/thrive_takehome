@@ -16,3 +16,6 @@ Style/Documentation:
 
 Metrics/AbcSize:
   Enabled: false
+
+Metrics/ParameterLists:
+  Max: 10
