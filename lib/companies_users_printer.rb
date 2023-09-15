@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Takes unorganized array of users and companies, organizes them as required and prints to file
+# Takes sorted and filtered array of users and companies
+# organizes them as required and prints to file
 class CompaniesUsersPrinter
   # Mainly here so I don't have to reference them internally as an instance variable and so specs
   # can check values
@@ -73,8 +74,8 @@ class CompaniesUsersPrinter
         #  file,sometimes conventions are meant to be broken.
         # rubocop:disable Layout/LineEndStringConcatenationIndentation
         "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
-        "\n\t\t\tPrevious Token Balance, #{user.tokens}" \
-        "\n\t\t\tNew Token Balance #{user.tokens + top_up}"
+        "\n\t\t\tPrevious Token Balance: #{user.tokens}" \
+        "\n\t\t\tNew Token Balance: #{user.tokens + top_up}"
         # rubocop:enable Layout/LineEndStringConcatenationIndentation
       end.join("\n")
   end
