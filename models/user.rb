@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User
-  attr_reader :tokens, :first_name, :last_name, :email, :previous_tokens
+  attr_reader :last_name, :company_id, :email_status
 
   # id is not necessary, and by filtering from the source based on active_status we don't need to
   # keep that either
@@ -19,26 +19,6 @@ class User
 
     @previous_tokens = @tokens
     @tokens += amount
-  end
-
-  def compute_email_status(company_email_status)
-    # Compute it only once
-    return if @has_computed_email_status
-
-    # Since @email_status can be nil (and still valid) in case company_email_status is truthey, but
-    # @user_email_status is nil, we need some other way of knowing this method has been run.
-    # Considering nil to be valid, since it's falsey in Ruby, so a missing or explcitly null value
-    # in the input will just default to false.
-    @has_computed_email_status = true
-    @email_status = company_email_status && @user_email_status
-  end
-
-  def should_email?
-    raise 'The company email status was not provided.' unless @has_computed_email_status
-
-    # For convention, a predicate method ends in ? and always returns a boolean (unless it raises),
-    # so running !! on it in case it's some other value that can be truthy or falsey.
-    !!@email_status
   end
 
   def print

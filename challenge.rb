@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require './lib/input_parser'
-require './lib/companies_users_printer'
 
 # This is here more for the sake of convention
 module Challenge
@@ -10,8 +9,12 @@ module Challenge
       'input/users.json',
       'input/companies.json'
     )
-    printer = CompaniesUsersPrinter.new(users, companies)
-    printer.print_to_file('output.txt')
+
+    companies.each do |company|
+      company.add_users(users.filter { |user| user.company_id == company.id })
+    end
+
+    File.write('log.txt', companies.map(&:print))
   end
 
   module_function :print_out_companies_users
