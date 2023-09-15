@@ -28,7 +28,7 @@ describe InputParser do
     expect(users).to be_empty
   end
 
-  it 'skips user if tokens is null' do
+  it 'skips user if tokens is nil' do
     users_in = [
       {
         id: 1,
@@ -93,7 +93,7 @@ describe InputParser do
     expect(users).to be_empty
   end
 
-  it 'skips user if company_id is null' do
+  it 'skips user if company_id is nil' do
     users_in = [
       {
         id: 1,
@@ -234,6 +234,94 @@ describe InputParser do
       email_status: true,
       tokens: 23
     )
+  end
+
+  it 'skips company if it has no id' do
+    companies_in = [
+      {
+        name: 'Ramjac Corporation',
+        top_up: 9001,
+        email_status: false
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return('[]')
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return(companies_in.to_json)
+
+    _, companies = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(companies).to be_empty
+  end
+
+  it 'skips company if id is nil' do
+    companies_in = [
+      {
+        id: nil,
+        name: 'Ramjac Corporation',
+        top_up: 9001,
+        email_status: false
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return('[]')
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return(companies_in.to_json)
+
+    _, companies = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(companies).to be_empty
+  end
+
+  it 'skips company if top_up is missing' do
+    companies_in = [
+      {
+        id: 1,
+        name: 'Ramjac Corporation',
+        email_status: false
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return('[]')
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return(companies_in.to_json)
+
+    _, companies = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(companies).to be_empty
+  end
+
+  it 'skips company if top_up is nil' do
+    companies_in = [
+      {
+        id: 1,
+        name: 'Ramjac Corporation',
+        top_up: nil,
+        email_status: false
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return('[]')
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return(companies_in.to_json)
+
+    _, companies = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(companies).to be_empty
+  end
+
+  it 'skips company if top_up is not an Integer' do
+    companies_in = [
+      {
+        id: 1,
+        name: 'Ramjac Corporation',
+        top_up: 'Not an int',
+        email_status: false
+      }
+    ]
+
+    allow(File).to receive(:read).with('USERS_FILE').and_return('[]')
+    allow(File).to receive(:read).with('COMPANIES_FILE').and_return(companies_in.to_json)
+
+    _, companies = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
+
+    expect(companies).to be_empty
   end
 
   it 'parses a single company properly' do

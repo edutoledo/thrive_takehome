@@ -68,12 +68,32 @@ module InputParser
       users.compact.sort { |a, b| a.last_name <=> b.last_name }
     end
 
+    def error_handle_company(company)
+      # Handle wrong input. The ones that matter are id and top_up, the rest will look
+      # weird if they're nil, but they won't lead to errors down the line. Raising is another
+      # option for doing this, but it would halt and exit.
+      if company['id'].nil?
+        return "Company missing an id, maybe it has a name: #{company['name']}\n"
+      end
+      return "Company with id: #{company['id']} has no top_up\n" if company['top_up'].nil?
+      return if company['top_up'].is_a?(Integer)
+
+      "Company with id: #{company['id']} has invalid type for top_up\n"
+    end
+
     def parse_and_sort_companies(companies)
       companies.map! do |company|
+        err = error_handle_company(company)
+        unless err.nil?
+          # Just writing it to stdout
+          puts err
+          next
+        end
+
         Company.new(company['id'], company['name'], company['top_up'], company['email_status'])
       end
 
-      companies.sort { |a, b| a.id <=> b.id }
+      companies.compact.sort { |a, b| a.id <=> b.id }
     end
   end
 
