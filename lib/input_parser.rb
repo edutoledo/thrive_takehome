@@ -41,7 +41,7 @@ module InputParser
         company_model = Company.new(
           company['id'], company['name'], company['top_up'], company['email_status']
         )
-        next unless company.valid?
+        next unless company_model.valid?
 
         company_model
       end

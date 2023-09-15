@@ -10,11 +10,15 @@ module Challenge
       'input/companies.json'
     )
 
-    companies.each do |company|
-      company.add_users(users.filter { |user| user.company_id == company.id })
-    end
+    companies.map! do |company|
+      company_users = users.filter { |user| user.company_id == company.id }
+      next if company_users.empty?
 
-    File.write('log.txt', companies.map(&:print))
+      company.add_users(company_users)
+      company
+    end.compact!
+
+    File.write('output.txt', "#{companies.map(&:print).join("\n")}\n\n")
   end
 
   module_function :print_out_companies_users

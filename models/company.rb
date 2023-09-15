@@ -21,7 +21,7 @@ class Company
     users.each do |user|
       user.top_up(@top_up)
       @total_top_up += @top_up
-      if email_status && user.email_status
+      if @email_status && user.email_status
         @emailed_users << user
       else
         @not_emailed_users << user
@@ -48,15 +48,19 @@ class Company
 
   private
 
+  def print_users(users)
+    (users.size.positive? ? "\n" : '') + users.map(&:print).join("\n")
+  end
+
   def print_emailed_users
     raise 'No users added to company' if @emailed_users.nil?
 
-    @emailed_users.map(&:print).join("\n")
+    print_users(@emailed_users)
   end
 
   def print_not_emailed_users
     raise 'No users added to company' if @not_emailed_users.nil?
 
-    @not_emailed_users.map(&:print).join("\n")
+    print_users(@not_emailed_users)
   end
 end

@@ -10,7 +10,7 @@ class User
     @last_name = last_name
     @email = email
     @company_id = company_id
-    @user_email_status = email_status
+    @email_status = email_status
     @tokens = tokens
   end
 
@@ -27,8 +27,8 @@ class User
 
     # rubocop:disable Layout/LineEndStringConcatenationIndentation
     "\t\t#{@last_name}, #{@first_name}, #{@email}" \
-    "\n\t\t\tPrevious Token Balance: #{@previous_tokens}" \
-    "\n\t\t\tNew Token Balance: #{@tokens}"
+    "\n\t\t  Previous Token Balance, #{@previous_tokens}" \
+    "\n\t\t  New Token Balance #{@tokens}"
     # rubocop:enable Layout/LineEndStringConcatenationIndentation
   end
 
