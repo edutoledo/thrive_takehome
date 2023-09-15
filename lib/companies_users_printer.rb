@@ -74,8 +74,8 @@ class CompaniesUsersPrinter
         # file,sometimes conventions are meant to be broken.
         # rubocop:disable Layout/LineEndStringConcatenationIndentation
         "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
-        "\n\t\t\tPrevious Token Balance: #{user.tokens}" \
-        "\n\t\t\tNew Token Balance: #{user.tokens + top_up}"
+        "\n\t\t  Previous Token Balance, #{user.tokens}" \
+        "\n\t\t  New Token Balance #{user.tokens + top_up}"
         # rubocop:enable Layout/LineEndStringConcatenationIndentation
       end.join("\n")
   end
@@ -97,6 +97,6 @@ class CompaniesUsersPrinter
       print_users(company_users[:not_emailed_users], company.top_up) +
       "\n\t\tTotal amount of top ups for #{company.name}: #{user_count * company.top_up}"
       # rubocop:enable Style/StringConcatenation, Layout/MultilineOperationIndentation
-    end.join("\n") + "\n"
+    end.join("\n") + "\n\n"
   end
 end
