@@ -10,14 +10,7 @@ require 'json'
 # to have a whole class just to satisfy that something was "topped up". This won't be stored
 # anywhwere except the output text file, so for all intents and purposes the final "user" was
 # topped up.
-User = Struct.new(
-  :first_name,
-  :last_name,
-  :email,
-  :company_id,
-  :email_status,
-  :tokens
-)
+User = Struct.new(:first_name, :last_name, :email, :company_id, :email_status, :tokens)
 # Same thing for company, a whole class is not needed.
 Company = Struct.new(:id, :name, :top_up, :email_status)
 
@@ -38,11 +31,10 @@ module InputParser
     private
 
     def error_handle_user(user)
-      # Handle wrong input. The ones that matter are company_id and tokens, the rest will look
+      # Handle wrong input. The only one that matters is tokens, the rest will look
       # weird if they're nil, but they won't lead to errors down the line. Raising is another
-      # option for doing this, but it would halt and exit.
-      return "User with id: #{user['id']} has no tokens\n" if user['tokens'].nil?
-      return "User with id: #{user['id']} has no company_id\n" if user['company_id'].nil?
+      # option for doing this, but it would halt and exit. If company_id is nil or some other value
+      # it simply won't match (companies are checked for nil id), so it won't be stored or printed
       return if user['tokens'].is_a?(Integer)
 
       "User with id: #{user['id']} has invalid type for tokens\n"
@@ -54,7 +46,6 @@ module InputParser
 
         err = error_handle_user(user)
         unless err.nil?
-          # Just writing it to stdout
           puts err
           next
         end
@@ -75,7 +66,6 @@ module InputParser
       if company['id'].nil?
         return "Company missing an id, maybe it has a name: #{company['name']}\n"
       end
-      return "Company with id: #{company['id']} has no top_up\n" if company['top_up'].nil?
       return if company['top_up'].is_a?(Integer)
 
       "Company with id: #{company['id']} has invalid type for top_up\n"
@@ -85,7 +75,6 @@ module InputParser
       companies.map! do |company|
         err = error_handle_company(company)
         unless err.nil?
-          # Just writing it to stdout
           puts err
           next
         end
@@ -97,8 +86,6 @@ module InputParser
     end
   end
 
-  # No specs written for this method since it does simple things, reading a file, parsing JSON,
-  # and calling 2 other methods that are already covered by specs.
   def read_and_parse_users_and_companies(users_filename, companies_filename)
     InputParser.new.read_and_parse_users_and_companies(users_filename, companies_filename)
   end

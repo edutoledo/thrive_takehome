@@ -72,27 +72,6 @@ describe InputParser do
     expect(users).to be_empty
   end
 
-  it 'skips user if company_id is missing' do
-    users_in = [
-      {
-        id: 1,
-        first_name: 'Tanya',
-        last_name: 'Nichols',
-        email: 'tanya.nichols@test.com',
-        email_status: true,
-        active_status: true,
-        tokens: 'string here'
-      }
-    ]
-
-    allow(File).to receive(:read).with('USERS_FILE').and_return(users_in.to_json)
-    allow(File).to receive(:read).with('COMPANIES_FILE').and_return('[]')
-
-    users, = InputParser.read_and_parse_users_and_companies('USERS_FILE', 'COMPANIES_FILE')
-
-    expect(users).to be_empty
-  end
-
   it 'skips user if company_id is nil' do
     users_in = [
       {
@@ -187,7 +166,7 @@ describe InputParser do
     )
   end
 
-  it 'parses and sorts (by last name) many active users properly' do
+  it 'parses and sorts active users by last name' do
     users_in = [
       {
         id: 1,
@@ -349,7 +328,7 @@ describe InputParser do
     )
   end
 
-  it 'parses and sorts (by id) many companies properly' do
+  it 'parses and sorts companies by id' do
     companies_in = [
       {
         id: 1337,

@@ -71,7 +71,7 @@ class CompaniesUsersPrinter
     output +
       users.map do |user|
         # Looks nicer without the indentation, things line up more like they'll look in the
-        #  file,sometimes conventions are meant to be broken.
+        # file,sometimes conventions are meant to be broken.
         # rubocop:disable Layout/LineEndStringConcatenationIndentation
         "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
         "\n\t\t\tPrevious Token Balance: #{user.tokens}" \
