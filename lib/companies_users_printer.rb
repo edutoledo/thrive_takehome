@@ -67,15 +67,16 @@ class CompaniesUsersPrinter
   def print_users(users, top_up)
     # Gotta put a conditional newline here
     output = users.size.positive? ? "\n" : ''
-    output + users.map do |user|
-      # Looks nicer without the indentation, things line up more like they'll look in the file,
-      # sometimes conventions are meant to be broken.
-      # rubocop:disable Layout/LineEndStringConcatenationIndentation
-      "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
-      "\n\t\t\tPrevious Token Balance, #{user.tokens}" \
-      "\n\t\t\tNew Token Balance #{user.tokens + top_up}"
-      # rubocop:enable Layout/LineEndStringConcatenationIndentation
-    end.join("\n")
+    output +
+      users.map do |user|
+        # Looks nicer without the indentation, things line up more like they'll look in the
+        #  file,sometimes conventions are meant to be broken.
+        # rubocop:disable Layout/LineEndStringConcatenationIndentation
+        "\t\t#{user.last_name}, #{user.first_name}, #{user.email}" \
+        "\n\t\t\tPrevious Token Balance, #{user.tokens}" \
+        "\n\t\t\tNew Token Balance #{user.tokens + top_up}"
+        # rubocop:enable Layout/LineEndStringConcatenationIndentation
+      end.join("\n")
   end
 
   # 1 line more than the 10 allowed by the method length

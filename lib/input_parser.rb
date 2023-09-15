@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+
 module InputParser
   # Keeping methods private and creating a single public method from the whole module
   class InputParser

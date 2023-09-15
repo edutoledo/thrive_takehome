@@ -8,6 +8,7 @@
 
 ## RSpec usage
 
+- All specs must be run from the project root folder, otherwise all the requires will not resolve to the correct file.
 - The specs may not look like your typical RSpec file. In my last work the team decided the use of let statements and subject actually leads to a lot of confusion.
 - Each unit test ('it' block) is completely self contained, all variable definitions are right there and exactly what code is running is very clear.
 - It does lead to more verbose specs and a lot of duplication accross tests. However, the goal of a unit test is not conciseness, it is clarity, it should be a contract describing how a part of your code should behave.
